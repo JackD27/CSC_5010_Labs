@@ -43,6 +43,13 @@ public class AutomaticTransmissionTest {
     new AutomaticTransmission(10, 15, 20, 25, -1);
   }
 
+  @Test(expected = IllegalStateException.class)
+  public void testNegativeSpeed() {
+    AutomaticTransmission transmissionNegativeSpeed = new AutomaticTransmission(2, 15, 20, 25, 30);
+    transmissionNegativeSpeed.decreaseSpeed();
+    transmissionNegativeSpeed.decreaseSpeed();
+  }
+
   @Test
   public void testIncreaseSpeed() {
     AutomaticTransmission transmission2 = new AutomaticTransmission(2, 4, 6, 8, 10);
