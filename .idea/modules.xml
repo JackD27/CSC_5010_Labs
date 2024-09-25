@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/lab00-getting-started/lab00-getting-started.iml" filepath="$PROJECT_DIR$/lab00-getting-started/lab00-getting-started.iml" />
       <module fileurl="file://$PROJECT_DIR$/lab01-stevenson/lab01-stevenson.iml" filepath="$PROJECT_DIR$/lab01-stevenson/lab01-stevenson.iml" />
       <module fileurl="file://$PROJECT_DIR$/lab02-transmissions/lab02-transmissions.iml" filepath="$PROJECT_DIR$/lab02-transmissions/lab02-transmissions.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lab03-model.iml" filepath="$PROJECT_DIR$/lab03-model.iml" />
       <module fileurl="file://$PROJECT_DIR$/testing/testing.iml" filepath="$PROJECT_DIR$/testing/testing.iml" />
     </modules>
   </component>
