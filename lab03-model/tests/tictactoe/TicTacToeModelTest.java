@@ -1,6 +1,7 @@
 package tictactoe;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
@@ -77,7 +78,6 @@ public class TicTacToeModelTest {
     assertEquals(Player.O, tictactoe.getMarkAt(1, 1));
     tictactoe.move(0, 1);
     assertEquals(Player.X, tictactoe.getMarkAt(0, 1));
-
   }
 
   @Test
@@ -111,17 +111,26 @@ public class TicTacToeModelTest {
   public void testGetBoard() {
     tictactoe.move(0, 0); // X
     tictactoe.move(1, 1); // O
-    tictactoe.move(0, 1); // X
-    tictactoe.move(1, 0); // O
-    tictactoe.move(0, 2); // X
     Player[][] board = tictactoe.getBoard();
     assertEquals(Player.X, board[0][0]);
     assertEquals(Player.O, board[1][1]);
+    assertNull(board[2][2]);
+  }
+
+  @Test
+  public void testGetBoardDeepCopy() {
+    tictactoe.move(0, 0); // X
+    Player[][] board = tictactoe.getBoard();
+    board[0][0] = Player.O;
+    assertEquals(Player.X, tictactoe.getMarkAt(0, 0));
   }
 
   @Test
   public void getMarkAt() {
     tictactoe.move(0, 0); // X
     assertEquals(Player.X, tictactoe.getMarkAt(0, 0));
+    tictactoe.move(1, 1); // O
+    assertEquals(Player.O, tictactoe.getMarkAt(1, 1));
+    assertNull(tictactoe.getMarkAt(1, 0));
   }
 }

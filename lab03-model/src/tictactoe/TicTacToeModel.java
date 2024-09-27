@@ -119,7 +119,11 @@ public class TicTacToeModel implements TicTacToe {
 
   @Override
   public Player[][] getBoard() {
-    return board;
+    Player[][] boardCopy = new Player[SIZE_OF_BOARD][SIZE_OF_BOARD];
+    for (int i = 0; i < SIZE_OF_BOARD; i++) {
+      boardCopy[i] = board[i].clone();
+    }
+    return boardCopy;
   }
 
   @Override
