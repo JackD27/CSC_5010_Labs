@@ -71,12 +71,12 @@ public class TicTacToeControllerTest {
   @Test
   public void testFailedInputNegative() {
     TicTacToe m = new TicTacToeModel();
-    StringReader input = new StringReader("-1 1 -1 1 3 1 -1 2 1 3 2 3 2 1 3 3 3 2 1 1 1 2 2 2");
+    StringReader input = new StringReader("-1 2 3 1 3");
     StringBuilder gameLog = new StringBuilder();
     TicTacToeController c = new TicTacToeConsoleController(input, gameLog);
     c.playGame(m);
     System.out.println(gameLog.toString());
-    assertTrue(gameLog.toString().contains("Not a valid number: -1\n"));
+    assertTrue(gameLog.toString().contains("No input provided.\n"));
   }
 
   @Test
@@ -113,6 +113,18 @@ public class TicTacToeControllerTest {
   }
 
   @Test
+  public void testMultipleInvalidMoves() {
+    TicTacToe m = new TicTacToeModel();
+    StringReader input = new StringReader("1 2 u b 3 3 u g 1 3 h i 2 1 3 1 3 2 u b 3 3 u g 1 3 h i 2 1 3 1 3 2 3");
+    StringBuilder gameLog = new StringBuilder();
+    TicTacToeController c = new TicTacToeConsoleController(input, gameLog);
+    c.playGame(m);
+    System.out.println(gameLog.toString());
+    assertTrue(gameLog.toString().contains("Not a valid move: 1, 4\n"));
+
+  }
+
+  @Test
   public void testNoInput() {
     TicTacToe m = new TicTacToeModel();
     StringReader input = new StringReader("");
@@ -125,7 +137,7 @@ public class TicTacToeControllerTest {
   @Test
   public void testQuitGameShortRow() {
     TicTacToe m = new TicTacToeModel();
-    StringReader input = new StringReader("q 2 1 1 3 3 1 2 1 3 2 3 2 1 3 1 3 2 3");
+    StringReader input = new StringReader("q 2 u b 3 3 u g 1 3 h i 2 1 3 1 3 2 3");
     StringBuilder gameLog = new StringBuilder();
     TicTacToeController c = new TicTacToeConsoleController(input, gameLog);
     c.playGame(m);
@@ -150,7 +162,20 @@ public class TicTacToeControllerTest {
     StringBuilder gameLog = new StringBuilder();
     TicTacToeController c = new TicTacToeConsoleController(input, gameLog);
     c.playGame(m);
+    System.out.println(gameLog.toString());
     assertTrue(gameLog.toString().contains("Game quit! Ending game state:"));
+  }
+
+  @Test
+  public void testQuitGameOccupiedCell() {
+    TicTacToe m = new TicTacToeModel();
+    StringReader input = new StringReader("2 2 1 1 2 2 q 2 2 2");
+    StringBuilder gameLog = new StringBuilder();
+    TicTacToeController c = new TicTacToeConsoleController(input, gameLog);
+    c.playGame(m);
+    assertTrue(gameLog.toString().contains("Game quit! Ending game state:"));
+    System.out.println(gameLog.toString());
+    assertFalse(m.isGameOver());
   }
 
   @Test

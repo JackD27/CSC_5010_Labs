@@ -50,10 +50,17 @@ public class TicTacToeConsoleController implements TicTacToeController {
         }
         input = scan.next(); // Directly read the input
 
-        // Check if the user wants to quit
         if ("q".equalsIgnoreCase(input) || "quit".equalsIgnoreCase(input)) {
           quitGame(m);
           return; // Exit the method to quit the game
+        }
+        while (Integer.parseInt(input) < 0) { //TODO: This, possibly move under quitGame
+          out.append("Invalid input, please enter a positive number for row:\n");
+          input = scan.next(); // Ask for new row input
+          if ("q".equalsIgnoreCase(input) || "quit".equalsIgnoreCase(input)) {
+            quitGame(m);
+            return; // Exit the method to quit the game
+          }
         }
 
         // Try to parse the row input
@@ -66,10 +73,18 @@ public class TicTacToeConsoleController implements TicTacToeController {
           return;
         }
         input = scan.next();
-        // Check if the user wants to quit
+
         if ("q".equalsIgnoreCase(input) || "quit".equalsIgnoreCase(input)) {
           quitGame(m);
           return; // Exit the method to quit the game
+        }
+        while (Integer.parseInt(input) < 0) { //TODO: This, possibly move under quitGame
+          out.append("Invalid input, please enter a positive number for col:\n");
+          input = scan.next(); // Ask for new row input
+          if ("q".equalsIgnoreCase(input) || "quit".equalsIgnoreCase(input)) {
+            quitGame(m);
+            return; // Exit the method to quit the game
+          }
         }
         col = Integer.parseInt(input);
 
