@@ -16,10 +16,29 @@ public class SentenceTest {
   }
 
   @Test
+  public void getNumberOfWordsEmpty() {
+    Sentence s = new EmptyNode();
+    assertEquals(0, s.getNumberOfWords());
+  }
+
+  @Test
+  public void getNumberOfWordsWithPunctuation() {
+    Sentence s = new WordNode("Hello", new WordNode("world",
+            new PunctuationNode(",", new EmptyNode())));
+    assertEquals(2, s.getNumberOfWords());
+  }
+
+  @Test
   public void longestWord() {
     Sentence s = new WordNode("Hello", new WordNode("world", new WordNode("test",
             new EmptyNode())));
     assertEquals("Hello", s.longestWord());
+  }
+
+  @Test
+  public void longestWordEmpty() {
+    Sentence s = new EmptyNode();
+    assertEquals("", s.longestWord());
   }
 
   @Test
@@ -28,6 +47,14 @@ public class SentenceTest {
     Sentence s2 = new WordNode("test", new EmptyNode());
     Sentence s3 = s.merge(s2);
     assertEquals("Hello world test", s3.toString());
+  }
+
+  @Test
+  public void mergeEmpty() {
+    Sentence s = new WordNode("Hello", new WordNode("world", new EmptyNode()));
+    Sentence s2 = new EmptyNode();
+    Sentence s3 = s.merge(s2);
+    assertEquals("Hello world", s3.toString());
   }
 
   @Test
@@ -48,8 +75,22 @@ public class SentenceTest {
   }
 
   @Test
+  public void duplicateEmpty() {
+    Sentence s = new EmptyNode();
+    Sentence s2 = s.duplicate();
+    assertEquals("", s2.toString());
+  }
+
+  @Test
   public void testToString() {
-    Sentence s = new WordNode("Hello", new WordNode("world", new EmptyNode()));
-    assertEquals("Hello world", s.toString());
+    Sentence s = new WordNode("Hello", new PunctuationNode(",",
+            new WordNode("world", new PunctuationNode(".", new EmptyNode()))));
+    assertEquals("Hello, world.", s.toString());
+  }
+
+  @Test
+  public void testToStringEmpty() {
+    Sentence s = new EmptyNode();
+    assertEquals("", s.toString());
   }
 }
