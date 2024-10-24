@@ -67,10 +67,11 @@ public class PolynomialImpl implements Polynomial {
 
   @Override
   public Polynomial add(Polynomial other) throws IllegalArgumentException {
-    if (!(other instanceof PolynomialImpl otherPoly)) {
-      throw new IllegalArgumentException("Parameter must be of the same concrete type");
+    if (!(other instanceof PolynomialImpl)) {
+      throw new IllegalArgumentException("Cannot add different types of polynomials");
     }
-    return new PolynomialImpl(addRecursive(this.head, otherPoly.head));
+    PolynomialImpl otherImpl = (PolynomialImpl) other;
+    return new PolynomialImpl(addRecursive(this.head, otherImpl.head));
   }
 
   private TermNode addRecursive(TermNode p1, TermNode p2) {
@@ -123,9 +124,10 @@ public class PolynomialImpl implements Polynomial {
 
   @Override
   public boolean isSame(Polynomial poly) {
-    if (!(poly instanceof PolynomialImpl other)) {
+    if (!(poly instanceof PolynomialImpl)) {
       return false;
     }
+    PolynomialImpl other = (PolynomialImpl) poly;
     return isSameRecursive(this.head, other.head);
   }
 

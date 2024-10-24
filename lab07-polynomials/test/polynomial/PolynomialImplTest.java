@@ -24,7 +24,8 @@ public class PolynomialImplTest {
     p1 = new PolynomialImpl("5x^2 +4x^1 -2");
     p2 = new PolynomialImpl("-50x^3 +1x^2 +3");
     p3 = new PolynomialImpl("2x^5 -3x^2 +4x^1 -10");
-    p4 = new PolynomialImpl("");
+    p4 = new PolynomialImpl();
+
   }
 
   @Test
