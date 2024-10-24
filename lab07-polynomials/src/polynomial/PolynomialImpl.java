@@ -65,7 +65,6 @@ public class PolynomialImpl implements Polynomial {
     }
   }
 
-
   @Override
   public Polynomial add(Polynomial other) throws IllegalArgumentException {
     if (!(other instanceof PolynomialImpl otherPoly)) {
