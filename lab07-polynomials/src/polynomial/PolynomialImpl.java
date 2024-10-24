@@ -13,16 +13,16 @@ public class PolynomialImpl implements Polynomial {
 
   private TermNode head;
 
-  PolynomialImpl() {
+  public PolynomialImpl() {
     this.head = null;
   }
 
-  PolynomialImpl(String polyString) {
+  public PolynomialImpl(String polyString) {
     this.head = null;
     parseString(polyString);
   }
 
-  PolynomialImpl(TermNode head) {
+  public PolynomialImpl(TermNode head) {
     this.head = head;
   }
 
@@ -188,12 +188,13 @@ public class PolynomialImpl implements Polynomial {
       return "";
     }
     String termStr = (current.getPower() == 0) ? String.valueOf(current.getCoefficient())
-            : (current.getPower() == 1) ? current.getCoefficient() + "x"
             : current.getCoefficient() + "x^" + current.getPower();
     String rest = toStringRecursive(current.getNext());
     if (!rest.isEmpty()) {
       if (rest.charAt(0) != '-') {
-        rest = " + " + rest;
+        rest = " +" + rest;
+      } else {
+        rest = " " + rest;
       }
     }
     return termStr + rest;

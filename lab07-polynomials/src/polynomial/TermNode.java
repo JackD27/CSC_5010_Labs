@@ -14,6 +14,7 @@ public class TermNode {
    *
    * @param coefficient the coefficient of the term
    * @param power       the power of the term
+   * @param next        the next term in the polynomial
    */
   public TermNode(int coefficient, int power, TermNode next) {
     this.coefficient = coefficient;

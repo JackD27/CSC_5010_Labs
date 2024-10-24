@@ -1,11 +1,11 @@
-package polynomial;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
+import polynomial.Polynomial;
+import polynomial.PolynomialImpl;
 
 /**
  * This class tests the PolynomialImpl class.
@@ -15,6 +15,7 @@ public class PolynomialImplTest {
   PolynomialImpl p2;
   PolynomialImpl p3;
   PolynomialImpl p4;
+  PolynomialImpl p5;
 
   /**
    * Sets up the test cases.
@@ -25,21 +26,21 @@ public class PolynomialImplTest {
     p2 = new PolynomialImpl("-50x^3 +1x^2 +3");
     p3 = new PolynomialImpl("2x^5 -3x^2 +4x^1 -10");
     p4 = new PolynomialImpl();
-
+    p5 = new PolynomialImpl("3x^2 +4x^1 -2");
   }
 
   @Test
   public void add() {
     Polynomial addedPoly = p1.add(p2);
-    assertEquals("-50x^3 + 6x^2 + 4x + 1", addedPoly.toString());
+    assertEquals("-50x^3 +6x^2 +4x^1 +1", addedPoly.toString());
     Polynomial addedPoly2 = p3.add(p4);
-    assertEquals("2x^5-3x^2 + 4x-10", addedPoly2.toString());
+    assertEquals("2x^5 -3x^2 +4x^1 -10", addedPoly2.toString());
   }
 
   @Test
   public void addTerm() {
     p1.addTerm(5, 2);
-    assertEquals("10x^2 + 4x-2", p1.toString());
+    assertEquals("10x^2 +4x^1 -2", p1.toString());
     p4.addTerm(5, 2);
     assertEquals("5x^2", p4.toString());
   }
@@ -75,9 +76,10 @@ public class PolynomialImplTest {
 
   @Test
   public void testToString() {
-    assertEquals("5x^2 + 4x-2", p1.toString());
-    assertEquals("-50x^3 + 1x^2 + 3", p2.toString());
-    assertEquals("2x^5-3x^2 + 4x-10", p3.toString());
+    assertEquals("5x^2 +4x^1 -2", p1.toString());
+    assertEquals("-50x^3 +1x^2 +3", p2.toString());
+    assertEquals("2x^5 -3x^2 +4x^1 -10", p3.toString());
     assertEquals("0", p4.toString());
+    assertEquals("3x^2 +4x^1 -2", p5.toString());
   }
 }
