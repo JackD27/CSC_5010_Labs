@@ -17,7 +17,16 @@ public class PolynomialImpl implements Polynomial {
     this.head = null;
   }
 
+  /**
+   * Constructs a new PolynomialImpl object with the given polynomial string.
+   *
+   * @param polyString the polynomial string
+   * @throws IllegalArgumentException if the polynomial string is invalid
+   */
   public PolynomialImpl(String polyString) {
+    if (polyString == null || polyString.isEmpty()) {
+      throw new IllegalArgumentException("Invalid polynomial string");
+    }
     this.head = null;
     parseString(polyString);
   }
@@ -27,15 +36,25 @@ public class PolynomialImpl implements Polynomial {
   }
 
   private void parseString(String s) {
-    Scanner scanner = new Scanner(s);
-    while (scanner.hasNext()) {
-      String termStr = scanner.next();
-      if (termStr.matches("[-+]?\\d+(x\\^\\d+)?")) {
-        int coefficient = parseCoefficient(termStr);
-        int power = parsePower(termStr);
-        if (power >= 0 && coefficient != 0) {
+    if (!s.matches("([-+]?[0-9]*x?(\\^\\d+)? ?)+")) {
+      throw new IllegalArgumentException("Invalid polynomial string format");
+    }
+
+    String[] terms = s.trim().split("(?=[+-])");
+    StringBuilder prev = new StringBuilder();
+    for (String term : terms) {
+      term = term.trim();
+
+      prev.append(term);
+
+      if (term.matches("[-+]?\\d*(x(\\^\\d+)?)?")) {
+        int coefficient = parseCoefficient(term);
+        int power = parsePower(term);
+        if (coefficient != 0) {
           addTerm(coefficient, power);
         }
+      } else {
+        throw new IllegalArgumentException("Invalid polynomial term: " + term);
       }
     }
   }

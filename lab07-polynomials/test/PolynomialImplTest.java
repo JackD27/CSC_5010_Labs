@@ -16,6 +16,8 @@ public class PolynomialImplTest {
   PolynomialImpl p3;
   PolynomialImpl p4;
   PolynomialImpl p5;
+  PolynomialImpl p6;
+  PolynomialImpl p7;
 
   /**
    * Sets up the test cases.
@@ -27,6 +29,12 @@ public class PolynomialImplTest {
     p3 = new PolynomialImpl("2x^5 -3x^2 +4x^1 -10");
     p4 = new PolynomialImpl();
     p5 = new PolynomialImpl("3x^2 +4x^1 -2");
+    p6 = new PolynomialImpl("4x +2x^5 -3x^2 -10");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testIllegalArgumentException() {
+    new PolynomialImpl("");
   }
 
   @Test
@@ -59,6 +67,7 @@ public class PolynomialImplTest {
     assertEquals(-6079, addedPoly.evaluate(5), 0.0);
     assertEquals(1, addedPoly.evaluate(0), 0.0);
     assertEquals(0, p4.evaluate(0), 0.0);
+    assertEquals(30, p5.evaluate(-4), 0.0);
   }
 
   @Test
@@ -66,12 +75,14 @@ public class PolynomialImplTest {
     assertEquals(5, p1.getCoefficient(2));
     assertEquals(0, p1.getCoefficient(3));
     assertEquals(0, p4.getCoefficient(2));
+    assertEquals(2, p6.getCoefficient(5));
   }
 
   @Test
   public void getDegree() {
     assertEquals(2, p1.getDegree());
     assertEquals(0, p4.getDegree());
+    assertEquals(5, p6.getDegree());
   }
 
   @Test
@@ -81,5 +92,6 @@ public class PolynomialImplTest {
     assertEquals("2x^5 -3x^2 +4x^1 -10", p3.toString());
     assertEquals("0", p4.toString());
     assertEquals("3x^2 +4x^1 -2", p5.toString());
+    assertEquals("2x^5 -3x^2 +4x^1 -10", p6.toString());
   }
 }
