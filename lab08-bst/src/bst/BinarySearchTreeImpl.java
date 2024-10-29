@@ -44,41 +44,124 @@ public class BinarySearchTreeImpl<T extends Comparable<T>> implements BinarySear
 
   @Override
   public int size() {
-    return 0;
+    return size;
   }
 
   @Override
   public int height() {
-    return 0;
+    return heightHelper(root);
+  }
+
+  private int heightHelper(Node<T> node) {
+    if (node == null) {
+      return 0;
+    }
+    return 1 + Math.max(heightHelper(node.getLeft()), heightHelper(node.getRight()));
   }
 
   @Override
   public boolean present(T data) {
-    return false;
+    return presentHelper(root, data);
+  }
+
+  private boolean presentHelper(Node<T> node, T data) {
+    if (node == null) {
+      return false;
+    }
+    int cmp = data.compareTo(node.getData());
+    if (cmp < 0) {
+      return presentHelper(node.getLeft(), data);
+    } else if (cmp > 0) {
+      return presentHelper(node.getRight(), data);
+    } else {
+      return true;
+    }
   }
 
   @Override
   public T minimum() {
-    return null;
+    return minimumHelper(root).getData();
+  }
+
+  private Node<T> minimumHelper(Node<T> node) {
+    if (node == null) {
+      return null;
+    }
+    if (node.getLeft() == null) {
+      return node;
+    }
+    return minimumHelper(node.getLeft());
   }
 
   @Override
   public T maximum() {
-    return null;
+    return maximumHelper(root).getData();
+  }
+
+  private Node<T> maximumHelper(Node<T> node) {
+    if (node == null) {
+      return null;
+    }
+    if (node.getRight() == null) {
+      return node;
+    }
+    return maximumHelper(node.getRight());
   }
 
   @Override
   public String preOrder() {
-    return "";
+    StringBuilder result = new StringBuilder();
+    preOrderHelper(root, result);
+    return formatResult(result);
   }
 
   @Override
   public String inOrder() {
-    return "";
+    StringBuilder result = new StringBuilder();
+    inOrderHelper(root, result);
+    return formatResult(result);
   }
 
   @Override
   public String postOrder() {
-    return "";
+    StringBuilder result = new StringBuilder();
+    postOrderHelper(root, result);
+    return formatResult(result);
+  }
+
+  private void preOrderHelper(Node<T> node, StringBuilder result) {
+    if (node != null) {
+      result.append(node.getData()).append(" ");
+      preOrderHelper(node.getLeft(), result);
+      preOrderHelper(node.getRight(), result);
+    }
+  }
+
+  private void inOrderHelper(Node<T> node, StringBuilder result) {
+    if (node != null) {
+      inOrderHelper(node.getLeft(), result);
+      result.append(node.getData()).append(" ");
+      inOrderHelper(node.getRight(), result);
+    }
+  }
+
+  private void postOrderHelper(Node<T> node, StringBuilder result) {
+    if (node != null) {
+      postOrderHelper(node.getLeft(), result);
+      postOrderHelper(node.getRight(), result);
+      result.append(node.getData()).append(" ");
+    }
+  }
+
+  private String formatResult(StringBuilder result) {
+    if (result.length() > 0) {
+      return String.format("[%s]", result.toString().trim());
+    }
+    return "[]";
+  }
+
+  @Override
+  public String toString() {
+    return inOrder();
   }
 }

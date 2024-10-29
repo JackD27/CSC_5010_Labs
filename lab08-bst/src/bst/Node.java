@@ -11,7 +11,12 @@ public class Node<T extends Comparable<T>> {
   private Node<T> left;
   private Node<T> right;
 
-  Node(T data) {
+  /**
+   * Constructor to initialize the instance variables.
+   *
+   * @param data the data to be stored in the node
+   */
+  public Node(T data) {
     this.data = data;
     this.left = null;
     this.right = null;
