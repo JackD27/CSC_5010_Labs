@@ -1,22 +1,21 @@
 package bst;
 
+/**
+ * This class implements the BinarySearchTree interface. It represents a binary
+ * search tree that can store any type of data that implements the Comparable
+ * interface
+ *
+ * @param <T> the type of element in the tree.
+ */
 public class BinarySearchTreeImpl<T extends Comparable<T>> implements BinarySearchTree<T> {
 
-  private class Node {
-    T data;
-    Node left;
-    Node right;
-
-    Node(T data) {
-      this.data = data;
-      this.left = null;
-      this.right = null;
-    }
-  }
-
-  private Node root;
+  private Node<T> root;
   private int size;
 
+  /**
+   * Add data to the binary search tree. This is ignored if the data item is already present.
+   * Constructor to initialize the instance variables
+   */
   public BinarySearchTreeImpl() {
     this.root = null;
     this.size = 0;
@@ -30,15 +29,15 @@ public class BinarySearchTreeImpl<T extends Comparable<T>> implements BinarySear
     root = addHelper(root, data);
   }
 
-  private Node addHelper(Node node, T data) {
+  private Node<T> addHelper(Node<T> node, T data) {
     if (node == null) {
       size++;
-      return new Node(data);
+      return new Node<>(data);
     }
-    if (data.compareTo(node.data) < 0) {
-      node.left = addHelper(node.left, data);
-    } else if (data.compareTo(node.data) > 0) {
-      node.right = addHelper(node.right, data);
+    if (data.compareTo(node.getData()) < 0) {
+      node.setLeft(addHelper(node.getLeft(), data));
+    } else if (data.compareTo(node.getData()) > 0) {
+      node.setRight(addHelper(node.getRight(), data));
     }
     return node;
   }
