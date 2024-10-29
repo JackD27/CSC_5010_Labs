@@ -26,14 +26,17 @@ public class BinarySearchTreeImplTest {
     bst.add(2);
     bst.add(8);
     bst.add(9);
+    bst.add(0);
+    bst.add(-10);
+    bst.add(-3);
   }
 
   @Test
   public void add() {
     bst.add(1);
-    assertEquals(8, bst.size());
+    assertEquals(11, bst.size());
     bst.add(1);
-    assertEquals(8, bst.size());
+    assertEquals(11, bst.size());
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -43,12 +46,12 @@ public class BinarySearchTreeImplTest {
 
   @Test
   public void size() {
-    assertEquals(7, bst.size());
+    assertEquals(10, bst.size());
   }
 
   @Test
   public void height() {
-    assertEquals(4, bst.height());
+    assertEquals(6, bst.height());
   }
 
   @Test
@@ -59,7 +62,7 @@ public class BinarySearchTreeImplTest {
 
   @Test
   public void minimum() {
-    assertEquals(Integer.valueOf(2), bst.minimum());
+    assertEquals(Integer.valueOf(-10), bst.minimum());
   }
 
   @Test
@@ -69,22 +72,22 @@ public class BinarySearchTreeImplTest {
 
   @Test
   public void preOrder() {
-    assertEquals("[7 3 2 10 8 9 12]", bst.preOrder());
+    assertEquals("[7 3 2 0 -10 -3 10 8 9 12]", bst.preOrder());
   }
 
   @Test
   public void inOrder() {
-    assertEquals("[2 3 7 8 9 10 12]", bst.inOrder());
+    assertEquals("[-10 -3 0 2 3 7 8 9 10 12]", bst.inOrder());
   }
 
   @Test
   public void postOrder() {
-    assertEquals("[2 3 9 8 12 10 7]", bst.postOrder());
+    assertEquals("[-3 -10 0 2 3 9 8 12 10 7]", bst.postOrder());
   }
 
   // Should be the same as inOrder
   @Test
   public void testToString() {
-    assertEquals("[2 3 7 8 9 10 12]", bst.toString());
+    assertEquals("[-10 -3 0 2 3 7 8 9 10 12]", bst.toString());
   }
 }
