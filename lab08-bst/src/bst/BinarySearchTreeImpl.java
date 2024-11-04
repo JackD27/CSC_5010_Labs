@@ -80,6 +80,9 @@ public class BinarySearchTreeImpl<T extends Comparable<T>> implements BinarySear
 
   @Override
   public T minimum() {
+    if (root == null) {
+      return null;
+    }
     return minimumHelper(root).getData();
   }
 
@@ -95,6 +98,9 @@ public class BinarySearchTreeImpl<T extends Comparable<T>> implements BinarySear
 
   @Override
   public T maximum() {
+    if (root == null) {
+      return null;
+    }
     return maximumHelper(root).getData();
   }
 
