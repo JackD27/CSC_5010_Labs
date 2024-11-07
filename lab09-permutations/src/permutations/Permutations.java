@@ -1,17 +1,18 @@
 package permutations;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Stack;
 
 /**
  * An iterator that generates permutations of a given set of characters.
  */
 public class Permutations implements BackAndForthIterator<String> {
   private final String sequence;
-  private int permLength;
-  private int[] indices;
-  private boolean hasNext;
-  private final Stack<String> history; // Stack
+  private final int permLength;
+  private final List<String> combinations;
+  private int currentIndex;
+  private boolean generated;
 
   /**
    * Constructs a new permutation iterator for the given characters.
@@ -32,81 +33,84 @@ public class Permutations implements BackAndForthIterator<String> {
     if (sequence == null || permLength < 1 || permLength > sequence.length()) {
       throw new IllegalArgumentException("Invalid sequence or permutation length");
     }
-
     this.sequence = sequence;
     this.permLength = permLength;
-    this.indices = new int[permLength];
-    for (int i = 0; i < permLength; i++) {
+    this.combinations = new ArrayList<>();
+    this.currentIndex = 0;
+    this.generated = false;
+  }
+
+  private void generatePermutations() {
+    if (!generated) {
+      for (int length = permLength; length <= sequence.length(); length++) {
+        generateCombinationsOfLengthIteratively(length);
+      }
+      generated = true;
+    }
+  }
+
+  private void generateCombinationsOfLengthIteratively(int length) {
+    int n = sequence.length();
+    int[] indices = new int[length];
+
+    for (int i = 0; i < length; i++) {
       indices[i] = i;
     }
-    this.hasNext = true;
-    this.history = new Stack<>();
+
+    while (indices[0] <= n - length) {
+      StringBuilder combination = new StringBuilder();
+
+      for (int i = 0; i < length; i++) {
+        combination.append(sequence.charAt(indices[i]));
+      }
+
+      combinations.add(combination.toString());
+
+      int i = length - 1;
+      while (i >= 0 && indices[i] == n - length + i) {
+        i--;
+      }
+
+      if (i < 0) {
+        break;
+      }
+
+      indices[i]++;
+      for (int j = i + 1; j < length; j++) {
+        indices[j] = indices[j - 1] + 1;
+      }
+    }
   }
 
   @Override
   public String previous() {
     if (!hasPrevious()) {
-      throw new NoSuchElementException("No previous permutation.");
+      throw new NoSuchElementException("No previous combination.");
     }
-
-    String previousPermutation = history.pop();
-
-    for (int i = 0; i < permLength; i++) {
-      indices[i] = sequence.indexOf(previousPermutation.charAt(i));
-    }
-
-    return previousPermutation;
+    return combinations.get(--currentIndex);
   }
 
   @Override
   public boolean hasPrevious() {
-    return !history.isEmpty();
+    return currentIndex > 0;
   }
 
   @Override
   public boolean hasNext() {
-    return hasNext;
+    if (!generated) {
+      generatePermutations();
+    }
+    return currentIndex < combinations.size();
   }
 
   @Override
   public String next() {
-    if (!hasNext) {
-      throw new NoSuchElementException("No more permutations.");
+    if (!generated) {
+      generatePermutations();
     }
-
-    StringBuilder permutation = new StringBuilder();
-    for (int index : indices) {
-      permutation.append(sequence.charAt(index));
+    if (!hasNext()) {
+      throw new NoSuchElementException("No more combinations.");
     }
-
-    history.push(permutation.toString());
-
-    hasNext = incrementIndices();
-
-    if (!hasNext && permLength < sequence.length()) {
-      permLength++;
-      indices = new int[permLength];
-      for (int i = 0; i < permLength; i++) {
-        indices[i] = i;
-      }
-      hasNext = true;
-    }
-
-    return permutation.toString();
-  }
-
-
-  private boolean incrementIndices() {
-    int i = permLength - 1;
-    while (i >= 0) {
-      indices[i]++;
-      if (indices[i] < sequence.length() - (permLength - (i + 1))) {
-        return true;
-      } else {
-        indices[i] = i;
-        i--;
-      }
-    }
-    return false;
+    return combinations.get(currentIndex++);
   }
 }
