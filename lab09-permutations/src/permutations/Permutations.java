@@ -1,15 +1,17 @@
 package permutations;
 
+import java.util.NoSuchElementException;
+import java.util.Stack;
+
 /**
  * An iterator that generates permutations of a given set of characters.
  */
 public class Permutations implements BackAndForthIterator<String> {
-  private final String chars;
-  private final int length;
-  private final int[] indices;
+  private final String sequence;
+  private int permLength;
+  private int[] indices;
   private boolean hasNext;
-  private boolean hasPrevious;
-
+  private final Stack<String> history; // Stack
 
   /**
    * Constructs a new permutation iterator for the given characters.
@@ -17,65 +19,48 @@ public class Permutations implements BackAndForthIterator<String> {
    * @param chars the characters to permute
    */
   public Permutations(String chars) {
-    if (chars == null || chars.isEmpty()) {
-      throw new IllegalArgumentException("Invalid input parameters.");
-    }
-
-    this.chars = chars;
-    this.length = 1;
-    this.indices = new int[length];
-
-    for (int i = 0; i < length; i++) {
-      indices[i] = i;
-    }
-
-    this.hasNext = true;
-    this.hasPrevious = false;
+    this(chars, 1);
   }
 
   /**
    * Constructs a new permutation iterator for the given characters and length.
    *
-   * @param chars the characters to permute
-   * @param length the length of the permutations
+   * @param sequence the characters to permute
+   * @param permLength the length of the permutations
    */
-  public Permutations(String chars, int length) {
-    if (chars == null || chars.isEmpty() || length < 1 || length > chars.length()) {
-      throw new IllegalArgumentException("Invalid input parameters.");
+  public Permutations(String sequence, int permLength) {
+    if (sequence == null || permLength < 1 || permLength > sequence.length()) {
+      throw new IllegalArgumentException("Invalid sequence or permutation length");
     }
 
-    this.chars = chars;
-    this.length = length;
-    this.indices = new int[length];
-
-    for (int i = 0; i < length; i++) {
+    this.sequence = sequence;
+    this.permLength = permLength;
+    this.indices = new int[permLength];
+    for (int i = 0; i < permLength; i++) {
       indices[i] = i;
     }
-
     this.hasNext = true;
-    this.hasPrevious = false;
+    this.history = new Stack<>();
   }
 
   @Override
   public String previous() {
-    if (!hasPrevious) {
-      throw new IllegalArgumentException("No previous permutation.");
+    if (!hasPrevious()) {
+      throw new NoSuchElementException("No previous permutation.");
     }
 
-    StringBuilder prevPermutation = new StringBuilder();
-    for (int index : indices) {
-      prevPermutation.append(chars.charAt(index));
+    String previousPermutation = history.pop();
+
+    for (int i = 0; i < permLength; i++) {
+      indices[i] = sequence.indexOf(previousPermutation.charAt(i));
     }
 
-    hasPrevious = generatePreviousPermutation();
-    hasNext = true;
-
-    return prevPermutation.toString();
+    return previousPermutation;
   }
 
   @Override
   public boolean hasPrevious() {
-    return hasPrevious;
+    return !history.isEmpty();
   }
 
   @Override
@@ -86,79 +71,42 @@ public class Permutations implements BackAndForthIterator<String> {
   @Override
   public String next() {
     if (!hasNext) {
-      throw new IllegalArgumentException("No more permutations.");
+      throw new NoSuchElementException("No more permutations.");
     }
 
-    StringBuilder currentPermutation = new StringBuilder();
+    StringBuilder permutation = new StringBuilder();
     for (int index : indices) {
-      currentPermutation.append(chars.charAt(index));
+      permutation.append(sequence.charAt(index));
     }
 
-    hasNext = generateNextPermutation();
-    hasPrevious = true;
+    history.push(permutation.toString());
 
-    return currentPermutation.toString();
+    hasNext = incrementIndices();
+
+    if (!hasNext && permLength < sequence.length()) {
+      permLength++;
+      indices = new int[permLength];
+      for (int i = 0; i < permLength; i++) {
+        indices[i] = i;
+      }
+      hasNext = true;
+    }
+
+    return permutation.toString();
   }
 
-  private boolean generateNextPermutation() {
-    int i = length - 1;
 
-    while (i > 0 && indices[i - 1] >= indices[i]) {
-      i--;
+  private boolean incrementIndices() {
+    int i = permLength - 1;
+    while (i >= 0) {
+      indices[i]++;
+      if (indices[i] < sequence.length() - (permLength - (i + 1))) {
+        return true;
+      } else {
+        indices[i] = i;
+        i--;
+      }
     }
-
-    if (i <= 0) {
-      return false;  // No more permutations
-    }
-
-    int j = length - 1;
-    while (indices[j] <= indices[i - 1]) {
-      j--;
-    }
-
-    swap(indices, i - 1, j);
-
-    j = length - 1;
-    while (i < j) {
-      swap(indices, i, j);
-      i++;
-      j--;
-    }
-
-    return true;
-  }
-
-  private boolean generatePreviousPermutation() {
-    int i = length - 1;
-
-    while (i > 0 && indices[i - 1] <= indices[i]) {
-      i--;
-    }
-
-    if (i <= 0) {
-      return false;
-    }
-
-    int j = length - 1;
-    while (indices[j] >= indices[i - 1]) {
-      j--;
-    }
-
-    swap(indices, i - 1, j);
-
-    j = length - 1;
-    while (i < j) {
-      swap(indices, i, j);
-      i++;
-      j--;
-    }
-
-    return true;
-  }
-
-  private void swap(int[] array, int i, int j) {
-    int temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
+    return false;
   }
 }

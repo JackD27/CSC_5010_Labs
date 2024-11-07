@@ -19,6 +19,7 @@ public class PermutationsTest {
   Permutations permutations5;
   Permutations permutations6;
   Permutations permutationsEmpty;
+  Permutations permutations7;
 
   /**
    * Sets up the test fixture.
@@ -28,6 +29,7 @@ public class PermutationsTest {
     permutations = new Permutations("abc");
     permutations2 = new Permutations("abcd");
     permutations3 = new Permutations("abcdef", 3);
+    permutations7 = new Permutations("abc", 2);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -45,54 +47,55 @@ public class PermutationsTest {
     String secondPerm = permutations.next();
     assertEquals("b", secondPerm);
     String previousPerm = permutations.previous();
-    assertEquals("abc", previousPerm);
+    assertEquals("b", previousPerm);
     String previousPerm2 = permutations.previous();
-    assertEquals("abc", previousPerm2);
+    assertEquals("a", previousPerm2);
   }
 
   @Test
   public void hasPrevious() {
     String firstPerm = permutations.next();
-    assertEquals("abc", firstPerm);
+    assertEquals("a", firstPerm);
     String secondPerm = permutations.next();
-    assertEquals("acb", secondPerm);
+    assertEquals("b", secondPerm);
     assertTrue(permutations.hasPrevious());
     String previousPerm = permutations.previous();
-    assertEquals("abc", previousPerm);
+    assertEquals("b", previousPerm);
+    assertTrue(permutations.hasPrevious());
+    String previousPerm2 = permutations.previous();
+    assertEquals("a", previousPerm2);
     assertFalse(permutations.hasPrevious());
   }
 
   @Test
   public void hasNext() {
-    assertTrue(permutations.hasNext());
-    String firstPerm = permutations.next();
+    assertTrue(permutations3.hasNext());
+    String firstPerm = permutations3.next();
     assertEquals("abc", firstPerm);
-    String secondPerm = permutations.next();
-    assertEquals("acb", secondPerm);
-    String thirdPerm = permutations.next();
-    assertEquals("bac", thirdPerm);
-    String fourthPerm = permutations.next();
-    assertEquals("bca", fourthPerm);
-    String fifthPerm = permutations.next();
-    assertEquals("cab", fifthPerm);
-    String sixthPerm = permutations.next();
-    assertEquals("cba", sixthPerm);
-    assertFalse(permutations.hasNext());
+    String secondPerm = permutations3.next();
+    assertEquals("abd", secondPerm);
+    String thirdPerm = permutations3.next();
+    assertEquals("abe", thirdPerm);
+    String fourthPerm = permutations3.next();
+    assertEquals("abf", fourthPerm);
+    String fifthPerm = permutations3.next();
+    assertEquals("acd", fifthPerm);
   }
 
   @Test
   public void next() {
-    String firstPerm = permutations.next();
-    assertEquals("abc", firstPerm);
-    String secondPerm = permutations.next();
-    assertEquals("acb", secondPerm);
-    String thirdPerm = permutations.next();
-    assertEquals("bac", thirdPerm);
-    String fourthPerm = permutations.next();
-    assertEquals("bca", fourthPerm);
-    String fifthPerm = permutations.next();
-    assertEquals("cab", fifthPerm);
-    String sixthPerm = permutations.next();
-    assertEquals("cba", sixthPerm);
+    String firstPerm = permutations7.next();
+    assertEquals("ab", firstPerm);
+    String secondPerm = permutations7.next();
+    assertEquals("ac", secondPerm);
+    String thirdPerm = permutations7.next();
+    assertEquals("ba", thirdPerm);
+    String fourthPerm = permutations7.next();
+    assertEquals("bc", fourthPerm);
+    String fifthPerm = permutations7.next();
+    assertEquals("ca", fifthPerm);
+    String sixthPerm = permutations7.next();
+    assertEquals("cb", sixthPerm);
+
   }
 }
