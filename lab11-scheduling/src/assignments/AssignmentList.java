@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class AssignmentList {
 
-  private List<Assignment> tasks;
+  private final List<Assignment> tasks;
   private String ordering;
 
   /** Default constructor. */
@@ -38,7 +38,7 @@ public class AssignmentList {
     if (strategy == null) {
       throw new IllegalArgumentException("No scheduling strategy provided");
     }
-    if (tasks == null || tasks.isEmpty()) {
+    if (tasks.isEmpty()) {
       throw new IllegalArgumentException("Task list does not exist");
     }
     this.ordering = strategy.schedule(tasks);
